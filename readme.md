@@ -62,6 +62,10 @@ In the payload you can add data that you whant to use when updating the state
 }
 ```
 
+* Actions  
+  - Action Types: the string identifier of each type of action, eg: 'itemAdded', 'itemRemoved'
+  - Action Creators: a function to generate and action object with its type and payload, it makes easier to create multiple times the same action.
+
 In a real App a store can have many slices, we can create multiple reducers, and each reducer manages how to update the store.
 
 We do not work with the reducer directly, we use the store, which calls the reducer. In that way we have a single entry point
@@ -174,7 +178,7 @@ Everytime an action is dispatch, we can log it, or check if the user is authoriz
 ----
 # Designing a Redux Store
 
-> Go to src/using-reduxtoolkit/  to see a complete example with ReduxToolkit, Memoization, Middlewares and Selectors
+> Go to src/using-reduxtoolkit/  to see a complete example with ReduxToolkit, Memoization, Middlewares, Cache, Selectors
 
 ## Redux State vs Local State
  
@@ -350,3 +354,45 @@ We can use libraries like *normalizr* to normalize the data, which is very easy 
 ## Selectors
 
 When we want to consume data from our store we can use selector to quickly get a slice of our store.
+
+## Memoization
+
+Every time we update the state in React we re-render the UI, imagine we have a heavy operation in our data that always gives the same output if the input data hasn't change.
+
+We can use memoization to avoid doing a re-calculation with the heavy operation again if the input data hasn't change (because we are going to get the same result anyways), for that we can use Memoization with selectors and libraries like 'reselect'
+
+```
+import { createSelector } from "reselect";
+
+....
+
+export const selectBugByUser = (userId) =>
+  createSelector(
+    (state) => state.entities.bugs, // output of this is the input of the next line
+    (bugs) => bugs.list.filter((bug) => bug.userId === userId)
+  );
+
+```
+
+## Cache
+
+Let's say we want to avoid to do an API call to get data before 10 minutes has passed (since it is a small amout of time and the remote data probably hasn't change), we can implement Caching by adding logic in our loadBugs() actionCreator
+
+```
+export const loadBugs = () => (dispatch, getState) => {
+  // implementing Caching
+  const { lastFetch } = getState().entities.bugs;
+  const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+  if (diffInMinutes < 10) {
+    return; // do not call the server for 2nd time
+  }
+  dispatch(
+    apiCallBegan({
+      url,
+      onStart: bugsRequested.type,
+      onSuccess: bugsReceived.type, // action to call if the call is succeed
+      onError: bugsRequestFailed.type,
+    })
+  );
+};
+```
