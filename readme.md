@@ -329,7 +329,7 @@ When we dispatch an action, each node in the reduceres tree pass the action to i
 
 Each reducer is responsible for updating a slice of the hole store state.
 
-<image src="../../images/combiningReducers.png" width="50%"/>
+<image src="./images/combiningReducers.png" width="50%"/>
 
 ## Normalization
 
@@ -337,11 +337,11 @@ Each reducer is responsible for updating a slice of the hole store state.
 
 Let's say our Bugs objects have a 'project' name field, and we also have an entity called Projects, so if the user updates the project name, we'll need to update it in every place.
 
-<image src="../../images/notNormalizedStore.png" width="50%"/>
+<image src="./images/notNormalizedStore.png" width="50%"/>
 
 In this case we need to normalize the data and replace the project object inside our bugs list, with a project id
 
-<image src="../../images/normalized.png" width="50%"/>
+<image src="./images/normalized.png" width="50%"/>
 
 **What if we are consuming an external API that provide us de-normalized data?**
 
