@@ -396,3 +396,31 @@ export const loadBugs = () => (dispatch, getState) => {
   );
 };
 ```
+
+# Testing Redux Apps
+
+## Solidarity (lonely) Test
+
+Test Action Creators, Reducers and the Middlewares alone, test individual units.
+
+Poor way to test Redux Apps, problems:
+
+* Coupled to the implementation (if it changes, the test breaks, we don't know if the error is in our code or in our app)
+
+**You should test the behaviour, not the implementation.**
+
+* Not reliable (it doesn't show us if the hole redux store works as expected)
+
+## Social Tests
+
+Test all redux components working together, the hole flow.
+
+What happens under the hood (the implementation) is not relevant to our tests.
+
+* Less fragile
+* Cheaper to write
+* Cheaper to matain
+* More reliable
+
+> Go to /src/using-reduxtoolkit/tests to see a complete example of how to do Social Tests with redux apps
+

@@ -55,7 +55,7 @@ const slice = createSlice({
 });
 
 // in our UI we should only call actions in form of Commands like 'addBug', not events like 'bugAdded'
-const {
+export const {
   bugAdded,
   bugResolved,
   bugAssignedUser,
@@ -76,7 +76,7 @@ export const loadBugs = () => (dispatch, getState) => {
   if (diffInMinutes < 10) {
     return; // do not call the server for 2nd time
   }
-  dispatch(
+  return dispatch(
     apiCallBegan({
       url,
       onStart: bugsRequested.type,

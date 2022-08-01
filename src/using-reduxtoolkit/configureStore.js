@@ -16,8 +16,8 @@ export default function () {
     reducer,
     middleware: [
       ...getDefaultMiddleware(),
-      logger({ destination: "console" }),
-      func,
+      // logger({ destination: "console" }),
+      // func,
       errorToast,
       api,
     ],
